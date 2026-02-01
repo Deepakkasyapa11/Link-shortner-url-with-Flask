@@ -1,0 +1,34 @@
+<body>
+    <section class="shortener">
+        <h1>URL Shortener</h1>
+
+        <form action="/" method="POST">
+            <input 
+                type="url" 
+                name="url" 
+                placeholder="Paste a long URL here..." 
+                class="url-input" 
+                required
+            >
+            <button type="submit" class="url-submit">Shorten</button>
+        </form>
+
+        {% if short_url %}
+        <div class="message success">
+            <h3>Success!</h3>
+            <span>Your link: <a href="{{ short_url }}" target="_blank">{{ short_url }}</a></span>
+        </div>
+        {% endif %}
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="message {{ category }}">
+                <h3>{{ category | capitalize }}</h3>
+                <span>{{ message }}</span>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </section>
+</body>
