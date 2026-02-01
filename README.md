@@ -1,70 +1,44 @@
-# link-shortner
+# LinkNode | High-Performance URL Shortening Service
 
-Description: A simple Python Flask application that creates short and memorable URLs for long links, making sharing and accessing them easier. It's easy to install, customize, and deploy.<br>
+A robust, production-ready Flask microservice designed for low-latency URL redirection and click-stream analytics. This project demonstrates modern Python web development patterns, moving away from volatile memory storage to a persistent, relational database architecture.
+<img width="592" height="623" alt="Screenshot (135)" src="https://github.com/user-attachments/assets/23cf32d4-eb98-4fc7-9466-57f9923b3e35" />
 
-# Flask Python Project
+# Architectural Design
+Unlike standard boilerplate implementations, this project utilizes a **Modular Factory Pattern** to ensure scalability and ease of testing.
 
-This repository contains a Python project built using the Flask framework. It showcases how to create a web application using Flask and utilizes the Flask-WTF extension for form handling.
+* **Application Factory:** Decouples the Flask instance creation from the global scope, preventing circular dependencies.
+* **Persistence Layer:** Utilizes SQLAlchemy ORM for ACID-compliant data transactions.
+* **Collision Resistance:** Uses `secrets.token_urlsafe` to generate high-entropy, URL-safe identifiers, minimizing the risk of ID collisions.
+* **Analytics Engine:** Integrated a streamlined redirection pipeline that captures real-time click metrics.
 
-## Requirements
+# Tech Stack
+- **Backend:** Flask 3.x
+- **ORM:** SQLAlchemy (Relational Mapping)
+- **Database:** SQLite (Engineered for seamless migration to PostgreSQL/MySQL)
+- **Tooling:** Python 3.8+, Virtualenv
 
-- Python 3.x
-- Flask
-- Flask-WTF
+# Getting Started
 
-## Installation
+### 1. Environment Setup
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd link-shortner-flask
 
-1. Clone the repository to your local machine:
+# Initialize virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: .\venv\Scripts\activate
 
-   ```shell
-   git clone https://github.com/shivamverma26/link-shortner.git
-   ```
+2. Dependency Management
+pip install -r requirements.txt
+3. Execution
+# The application automatically initializes the SQLite database on first run
+python run.py
+The service will be available at http://127.0.0.1:5000.
 
-2. Navigate to the project directory:
+# Design Decisions
+Manual Form Handling: Opted for raw request parsing over external libraries like Flask-WTF to reduce overhead and demonstrate core HTTP protocol understanding.
 
-   ```shell
-   cd link-shortner
-   ```
+Data Isolation: Designed a dedicated Link model with unique constraints on the short_id to ensure data integrity.
 
-3. Install the required module using `pip`:
-
-   ```shell
-   pip install flask
-   pip install flask-wtf
-   ```
-
-   This will install Flask and Flask-WTF.
-
-## Usage
-
-1. Start the Flask development server:
-
-   ```shell
-   python app.py
-   ```
-
-2. Open a web browser and visit `http://localhost:5000` to access the application.
-
-## Project Structure
-
-The project has the following structure:
-
-```
-flask-python-project/
-   ├── app.py
-   ├── forms.py
-   ├── templates/
-   │   ├── base.html
-   │   └── index.html
-   └── README.md
-```
-
-- `app.py`: The main Flask application file.
-- `forms.py`: Contains the Flask-WTF form definition.
-- `templates/`: Directory containing HTML templates.
-  - `base.html`: Base template file with common HTML structure.
-  - `index.html`: Home page template file.
-- `README.md`: This file, providing information about the project.
-
-
-
+Security: Implemented CSRF-resistant patterns and secure secret key management via a dedicated config.py.
